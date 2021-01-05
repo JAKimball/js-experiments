@@ -1,0 +1,66 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "JAKimball",
+      "content": "This is why we can't have nice things!",
+      "cow-shape": "Square"
+    },
+    {
+      "title": "Here is some data",
+      "content": "You can't synthesize the bus without quantifying the haptic USB panel!",
+      "author": "JAKimball",
+      "id": 2
+    },
+    {
+      "title": "BGP Routing",
+      "content": "The SSL circuit is down, calculate the haptic system so we can parse the GB application!",
+      "author": "JAKimball",
+      "id": 3
+    },
+    {
+      "title": "BGP Routing",
+      "content": "I'll copy the redundant CSS pixel, that should port the XSS firewall!",
+      "author": "JAKimball",
+      "id": 4
+    },
+    {
+      "title": "Streamlined fault-tolerant Graphical User Interface",
+      "content": "If we index the transmitter, we can get to the USB panel through the optical EXE sensor! Twas brilling and the slithy toves did gire and gimble in the wabe!",
+      "author": "JAKimball",
+      "id": 5
+    },
+    {
+      "title": "Preflight request",
+      "content": "A CORS preflight request is a CORS request that checks to see if the CORS protocol is understood and a server is aware using specific methods and headers.",
+      "author": "MDN",
+      "id": 6
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    },
+    {
+      "id": 5,
+      "body": "I thought I heard a snicker-snack!",
+      "postId": 5
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "frogs": [
+    {
+      "id": 1,
+      "name": "Alister"
+    },
+    {
+      "id": 2,
+      "name": "Kermit"
+    }
+  ]
+}
