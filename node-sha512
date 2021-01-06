@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+// @ts-check
+
+// Source: https://nodejs.org/dist/latest-v14.x/docs/api/crypto.html
+
+
+const filename = process.argv[2];
+const crypto = require('crypto');
+const fs = require('fs');
+
+
+/**
+ * 
+ * 
+ * @param {fs.PathLike} filename
+ */
+const fileHash = (filename) => {
+  const hash = crypto.createHash('sha512');
+  const input = fs.createReadStream(filename);
+  input.on('readable', () => {
+    // Only one element is going to be produced by the
+    // hash stream.
+    const data = input.read();
+    if (data)
+      hash.update(data);
+    else {
+      const buf = hash.digest();
+      console.log(buf.toString('hex'));
+      console.log(`${buf.toString('hex', 0, 1)}/${encodeURIComponent(buf.toString('base64', 1))}`);
+    }
+  });
+
+}
+
