@@ -32,3 +32,4 @@ const fileHash = (filename) => {
 
 }
 
+fileHash(filename);
