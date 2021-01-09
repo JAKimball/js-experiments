@@ -10,7 +10,7 @@ const fs = require('fs');
 
 
 /**
- * 
+ * Calculate hash of file synchronously. 
  * 
  * @param {fs.PathLike} filename
  */
