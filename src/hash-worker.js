@@ -25,7 +25,7 @@ if (isMainThread) {
 const fileHash = (filename, algorithm) => {
   const hash = crypto.createHash(algorithm || 'sha512');
   const input = fs.createReadStream(filename);
-  let buf = {};  // TODO: Resume here! fix this so it can work!
+  let digest = {};  // TODO: Resume here! fix this so it can work!
   input.on('readable', () => {
     // Only one element is going to be produced by the
     // hash stream.
@@ -33,12 +33,15 @@ const fileHash = (filename, algorithm) => {
     if (data)
       hash.update(data);
     else {
-      buf = hash.digest();
+      digest = hash.digest();
       // console.log(buf.toString('hex'));
       // console.log(`${buf.toString('hex', 0, 1)}/${encodeURIComponent(buf.toString('base64', 1))}`);
     }
   });
 
 }
+
+module.exports = { fileHash };
+
 
 

@@ -21,9 +21,11 @@ const fileHash = (filename) => {
     // Only one element is going to be produced by the
     // hash stream.
     const data = input.read();
-    if (data)
+    if (data) {
+      console.time('hash');
       hash.update(data);
-    else {
+      console.timeEnd('hash');
+    } else {
       const buf = hash.digest();
       console.log(buf.toString('hex'));
       console.log(`${buf.toString('hex', 0, 1)}/${encodeURIComponent(buf.toString('base64', 1))}`);
