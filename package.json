@@ -4,6 +4,7 @@
   "description": "JavaScript Experiments",
   "main": "scratchpad.js",
   "dependencies": {
+    "blake3": "^2.1.4",
     "express": "^4.17.1",
     "uuid": "^8.3.1"
   },

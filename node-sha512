@@ -16,9 +16,10 @@ const fs = require('fs');
  */
 const fileHash = (filename) => {
 
+  // const hash = crypto.createHash('sha256');
   // const hash = crypto.createHash('sha512');
-  // const hash = crypto.createHash('blake2b512');
-  const hash = crypto.createHash('sha1');
+  const hash = crypto.createHash('blake2b512');
+  // const hash = crypto.createHash('sha1');
 
   const input = fs.createReadStream(filename);
   let maxLen = 0;
@@ -28,12 +29,12 @@ const fileHash = (filename) => {
     const data = input.read();
     if (data) {
       // console.time('hash');
-      // if (data.length > maxLen) { maxLen = data.length };
+      if (data.length > maxLen) { maxLen = data.length };
       hash.update(data);
       // console.timeEnd('hash');
     } else {
       const buf = hash.digest();
-      // console.log(`read buffer size: ${maxLen}`)
+      console.log(`read buffer size: ${maxLen}`)
       console.log(buf.toString('hex'));
       console.log(`${buf.toString('hex', 0, 1)}/${encodeURIComponent(buf.toString('base64', 1))}`);
     }
@@ -42,3 +43,4 @@ const fileHash = (filename) => {
 }
 
 fileHash(filename);
+console.log('reading...');
