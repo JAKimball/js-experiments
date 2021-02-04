@@ -3,6 +3,7 @@
 
 // Source: https://nodejs.org/dist/latest-v14.x/docs/api/crypto.html
 
+'use strict'
 
 const filename = process.argv[2];
 const crypto = require('crypto');
