@@ -1,16 +1,16 @@
 // From https://rfrn.org/~shu/2013/03/20/two-reasons-functional-style-is-slow-in-spidermonkey.html
 'use strict';
 
-const uuid = require('uuid');
+import { validate, stringify, parse } from 'uuid';
 
-function benchmark2D(n, iters, f) {
+function benchmark2D(n: number, iters: number, f: any) {
   var outer = [];
   // var outer = new Int32Array(n);
   for (var i = 0; i < n; i++) {
     var inner = [];
     for (var j = 0; j < n; j++)
       inner.push(Math.random() * 100)
-      // inner[j] = Math.random() * 100;
+    // inner[j] = Math.random() * 100;
     outer.push(inner);
     // console.log(outer[outer.length-1].length)
   }
@@ -22,7 +22,7 @@ function benchmark2D(n, iters, f) {
   console.timeEnd(f.name);
 }
 
-function forLoop(outer) {
+function forLoop(outer: string | any[]) {
   var max = -Infinity;
   for (var i = 0; i < outer.length; i++) {
     var inner = outer[i];
@@ -34,7 +34,7 @@ function forLoop(outer) {
   }
 }
 
-function forLenLoop(outer) {
+function forLenLoop(outer: string | any[]) {
   var max = -Infinity;
   for (var i = 0, oLen = outer.length; i < oLen; i++) {
     var inner = outer[i];
@@ -46,7 +46,7 @@ function forLenLoop(outer) {
   }
 }
 
-function forLetLoop(outer) {
+function forLetLoop(outer: string | any[]) {
   var max = -Infinity;
   for (let i = 0; i < outer.length; i++) {
     var inner = outer[i];
@@ -58,7 +58,7 @@ function forLetLoop(outer) {
   }
 }
 
-function forLetLenLoop(outer) {
+function forLetLenLoop(outer: string | any[]) {
   var max = -Infinity;
   for (let i = 0, len = outer.length; i < len; i++) {
     var inner = outer[i];
@@ -70,10 +70,10 @@ function forLetLenLoop(outer) {
   }
 }
 
-function arrayForEach(outer) {
+function arrayForEach(outer: any[]) {
   var max = -Infinity;
-  outer.forEach(function(inner) {
-    inner.forEach(function(v) {
+  outer.forEach(function (inner: any[]) {
+    inner.forEach(function (v: number) {
       if (v > max)
         max = v;
     });
@@ -94,7 +94,7 @@ function makeBox() {
   var catState = 'Awake';
   // var dogState = 'Sleeping';
 
-  function _eval(str) {
+  function _eval(str: string) {
     return eval(str);
   }
 
@@ -112,7 +112,7 @@ let makeEs6Box = () => {
   let catState = 'Awake';
   let dogState = 'Sleeping';
 
-  const _eval = str => eval(str);
+  const _eval = (str: string) => eval(str);
 
   const getDogState = () => dogState;
 
@@ -124,12 +124,12 @@ let makeEs6Box = () => {
 
 /***************************************************** */
 
-function benchmark(iters, f, ...rest) {
+function benchmark(iters: number, f: <T extends unknown[], R = unknown>(...args: T) => R, ...rest: any[]) {
   let benchName = `${f.name}`;
   console.time(benchName);
 
   for (let i = 0; i < iters; i++) {
-    f(...rest); 
+    f(...rest);
   }
 
   console.timeEnd(benchName);
@@ -145,14 +145,14 @@ for (let i = 0, len = src.length; i < len; i++) {
   src[i] = (Math.random() * 0x100) & 0xff;
 }
 
-function copy(src, dst) {
+function copy(src: Uint8Array | Float64Array, dst: Uint8Array | Float64Array) {
   let len = src.length < dst.length ? src.length : dst.length;
   for (let i = 0; i < len; i++) {
     dst[i] = src[i];
   }
 }
 
-function copyWhile(src, dst) {
+function copyWhile(src: Uint8Array | Float64Array, dst: Uint8Array | Float64Array) {
   let len = src.length < dst.length ? src.length : dst.length;
   let i = 0;
   while (i < len) {
@@ -169,11 +169,11 @@ function copyFloat64() {
   copy(src64, dst64);
 }
 
-function fastCopy(src, dst) {
+function fastCopy(src: Uint8Array | Float64Array, dst: Uint8Array | Float64Array) {
   dst.set(src);
 }
 
-function benchmarkX2(iters, f, ...rest) {
+function benchmarkX2(iters: number, f: any, ...rest: (any)[]) {
   benchmark(iters, f, ...rest);
   benchmark(iters, f, ...rest);
 }
@@ -194,8 +194,8 @@ function allCopyBenchmarks() {
 
 const nodeParseRegEx = /-/g;
 
-function nodeParse(uuidStr) {
-  if (!uuid.validate(uuidStr)) {
+function nodeParse(uuidStr: string) {
+  if (!validate(uuidStr)) {
     throw TypeError('Invalid UUID');
   }
 
@@ -203,13 +203,13 @@ function nodeParse(uuidStr) {
   const buf = Buffer.from(`${uuidStr.slice(0, 8)}${uuidStr.slice(9, 13)}${uuidStr.slice(14, 18)}${uuidStr.slice(19, 23)}${uuidStr.slice(24, 36)}`, 'hex');
   // const buf = Buffer.from("" + uuidStr.slice(0, 8) + uuidStr.slice(9, 13) + uuidStr.slice(14, 18) + uuidStr.slice(19, 23) + uuidStr.slice(24, 36), 'hex');
 
-  const arr = new Uint8Array(buf.buffer, buf.byteOffset, buf.length); 
+  const arr = new Uint8Array(buf.buffer, buf.byteOffset, buf.length);
 
   return arr;
 }
 
-function browserParse(uuidStr) {
-  if (!uuid.validate(uuidStr)) {
+function browserParse(uuidStr: string) {
+  if (!validate(uuidStr)) {
     throw TypeError('Invalid UUID');
   }
 
@@ -241,8 +241,8 @@ const littleEndian = (function () {
   return new Int8Array(int32Array.buffer)[0] === 1;
 })();
 
-function browserParse2(uuidStr) {
-  if (!uuid.validate(uuidStr)) {
+function browserParse2(uuidStr: string) {
+  if (!validate(uuidStr)) {
     throw TypeError('Invalid UUID');
   }
 
@@ -261,7 +261,7 @@ function browserParse2(uuidStr) {
 
   // Parse ........-####-####-....-............
   arr32[offset + stepBy] = parseInt(uuidStr.slice(9, 13), 16) << 16 | parseInt(uuidStr.slice(14, 18), 16);
-  
+
   // Parse ........-....-....-####-nnnn........
   const n = parseInt(uuidStr.slice(24, 36), 16);
   // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
@@ -278,8 +278,8 @@ function browserParse2(uuidStr) {
 const _arr = new Uint8Array(16)
 const _arr32 = new Uint32Array(_arr.buffer);
 
-function browserParse3(uuidStr) {
-  if (!uuid.validate(uuidStr)) {
+function browserParse3(uuidStr: string) {
+  if (!validate(uuidStr)) {
     throw TypeError('Invalid UUID');
   }
 
@@ -295,7 +295,7 @@ function browserParse3(uuidStr) {
 
   // Parse ........-####-####-....-............
   _arr32[offset + stepBy] = parseInt(uuidStr.slice(9, 13), 16) << 16 | parseInt(uuidStr.slice(14, 18), 16);
-  
+
   // Parse ........-....-....-####-nnnn........
   const n = parseInt(uuidStr.slice(24, 36), 16);
   // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
@@ -319,11 +319,11 @@ const _uuid8Size = 16;
 const _uuid32Size = 4;
 let _arr32Pool = new Uint32Array(_uuid32Size * _uuidPoolLength);
 
-function browserParse4(uuidStr) {
-  if (!uuid.validate(uuidStr)) {
+function browserParse4(uuidStr: string) {
+  if (!validate(uuidStr)) {
     throw TypeError('Invalid UUID');
   }
-  
+
   // Try sub-allocating a larger buffer
   _PoolIndex++;
   if (_PoolIndex >= _uuidPoolLength) {
@@ -364,26 +364,26 @@ function browserParse4(uuidStr) {
 
 function uuidBenchmarks() {
   let testUuid = '50d21d57-12d7-4319-8558-ef29f69e4d51';
-  let testParse = uuid.stringify(nodeParse(testUuid));
+  let testParse = stringify(nodeParse(testUuid));
   console.log(testParse);
-  testParse = uuid.stringify(browserParse(testUuid));
+  testParse = stringify(browserParse(testUuid));
   console.log(testParse);
-  testParse = uuid.stringify(browserParse2(testUuid));
+  testParse = stringify(browserParse2(testUuid));
   console.log(testParse);
-  testParse = uuid.stringify(browserParse3(testUuid));
+  testParse = stringify(browserParse3(testUuid));
   console.log(testParse);
-  testParse = uuid.stringify(browserParse4(testUuid));
-  
+  testParse = stringify(browserParse4(testUuid));
+
   testUuid = '82f83510-3cd4-11eb-9426-2fb3003bc7e9';
-  let testParse2 = uuid.stringify(browserParse4(testUuid));
-  let testParse3 = uuid.stringify(browserParse4(testUuid));
-  let testParse4 = uuid.stringify(browserParse4(testUuid));
+  let testParse2 = stringify(browserParse4(testUuid));
+  let testParse3 = stringify(browserParse4(testUuid));
+  let testParse4 = stringify(browserParse4(testUuid));
   console.log(testParse2);
   console.log(testParse3);
   console.log(testParse4);
-  
+
   benchmarkX2(1e6, browserParse4, testUuid);
-  benchmarkX2(1e6, uuid.parse, testUuid);
+  benchmarkX2(1e6, parse, testUuid);
   benchmarkX2(1e6, nodeParse, testUuid);
   benchmarkX2(1e6, browserParse, testUuid);
   benchmarkX2(1e6, browserParse2, testUuid);
@@ -400,19 +400,19 @@ function uuidBenchmarks() {
  * @param {*} factor
  * @param {*} limit
  */
-async function pinger(cb, startInterval, factor, limit) {
+async function pinger(cb: () => void, startInterval: number, factor: number, limit: number) {
   let delay = startInterval;
 
   while (delay > limit) {
-    await new Promise((resolve) => setTimeout(() => resolve(), delay));
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
     cb();
     delay *= factor;
   }
 }
 
-async function timePinger(label, ...args) {
+async function timePinger(label: string, cb: () => void, startInterval: number, factor: number, limit: number) {
   console.time(label);
-  await pinger(...args);
+  await pinger(cb, startInterval, factor, limit);
   console.timeEnd(label);
 }
 
@@ -420,10 +420,11 @@ function startPingers() {
   timePinger('ping', () => console.log('ping'), 50000, 0.9, 10);
   timePinger('pong', () => console.log('     pong'), 51000, 0.9, 10);
   timePinger('zip', () => console.log('          zip'), 52000, 0.9, 10);
-  timePinger('spazz!', () => console.log('              spazz!'), 53000, 0.9, 10);
+  timePinger('zoom!', () => console.log('              zoom!'), 53000, 0.9, 10);
 }
 
 uuidBenchmarks();
+allCopyBenchmarks();
 
 // const repl = require('repl');
 

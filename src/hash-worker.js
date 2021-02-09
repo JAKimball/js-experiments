@@ -1,20 +1,20 @@
 // @ts-check
 'use strict';
 
-const {
+import {
   Worker,
   isMainThread
-} = require('worker_threads');
-const crypto = require('crypto');
-const fs = require('fs');
+} from 'worker_threads';
+import crypto from 'crypto';
+import fs from 'fs';
 
-if (isMainThread) {
-  // This re-loads the current file inside a Worker instance.
-  new Worker(__filename);
-} else {
-  console.log('Inside Worker!');
-  console.log(isMainThread); // Prints 'false'.
-}
+// if (isMainThread) {
+//   // This re-loads the current file inside a Worker instance.
+//   new Worker(__filename);
+// } else {
+//   console.log('Inside Worker!');
+//   console.log(isMainThread); // Prints 'false'.
+// }
 
 /**
  * Calculate hash of file synchronously. 
@@ -22,7 +22,7 @@ if (isMainThread) {
  * @param {fs.PathLike} filename
  * @param {any} algorithm
  */
-const fileHash = (filename, algorithm) => {
+export const fileHash = (filename, algorithm) => {
   const hash = crypto.createHash(algorithm || 'sha512');
   const input = fs.createReadStream(filename);
   let digest = {};  // TODO: Resume here! fix this so it can work!
@@ -34,6 +34,7 @@ const fileHash = (filename, algorithm) => {
       hash.update(data);
     else {
       digest = hash.digest();
+      input.close();
       // console.log(buf.toString('hex'));
       // console.log(`${buf.toString('hex', 0, 1)}/${encodeURIComponent(buf.toString('base64', 1))}`);
     }
@@ -41,7 +42,7 @@ const fileHash = (filename, algorithm) => {
 
 }
 
-module.exports = { fileHash };
+// module.exports = { fileHash };
 
 
 

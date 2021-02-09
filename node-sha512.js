@@ -6,23 +6,23 @@
 'use strict'
 
 const filename = process.argv[2];
-const crypto = require('crypto');
-const fs = require('fs');
+import { createHash } from 'crypto';
+import { createReadStream } from 'fs';
 
 
 /**
  * Calculate hash of file synchronously. 
  * 
- * @param {fs.PathLike} filename
+ * @param {import('fs').PathLike} filename
  */
 const fileHash = (filename) => {
 
   // const hash = crypto.createHash('sha256');
   // const hash = crypto.createHash('sha512');
-  const hash = crypto.createHash('blake2b512');
+  const hash = createHash('blake2b512');
   // const hash = crypto.createHash('sha1');
 
-  const input = fs.createReadStream(filename);
+  const input = createReadStream(filename, { highWaterMark: 512 * 1024 });
   let maxLen = 0;
   input.on('readable', () => {
     // Only one element is going to be produced by the

@@ -1,7 +1,4 @@
-const {
-  Worker,
-  isMainThread
-} = require('worker_threads');
+import { Worker, isMainThread } from 'worker_threads';
 
 if (isMainThread) {
   // This re-loads the current file inside a Worker instance.

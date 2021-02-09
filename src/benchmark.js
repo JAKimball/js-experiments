@@ -1,16 +1,20 @@
 'use strict';
 
 // const Benchmark = (typeof window !== 'undefined' && window.Benchmark) || require('benchmark');
-const Benchmark = require('benchmark');
+
+
+import pkg from 'benchmark';
 
 const {
-  fileHash
-} = require('./hash-worker');
+  Suite
+} = pkg;
+
+import { fileHash } from './hash-worker.js';
 
 let testFile = '';
 
 function benchHashFunctions() {
-  const suite = new Benchmark.Suite({
+  const suite = new Suite({
     onError(event) {
       console.error(event.target.error);
     },
