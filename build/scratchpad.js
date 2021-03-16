@@ -103,6 +103,29 @@ let makeEs6Box = () => {
         getDogState,
     };
 };
+/*************************************************************
+ * Quokka Scratchpad...
+ *
+ * With the Quokka.js Visual Studio Code Extension installed,
+ * press Ctrl/Cmd + Shift + P to display the editor’s command
+ * palette, and then type "Quokka" to see the list of the
+ * available commands.
+ * Select and run the "Start on Current File" command.
+ */
+let boxes = Array.from({ length: 10 }, () => makeEs6Box());
+let catBoxes = boxes.map(box => ({
+    ...box,
+    setCatState: box.eval('state => catState = state'),
+}));
+catBoxes;
+console.log(catBoxes[0].eval('catState'));
+console.log(catBoxes[1].eval('catState'));
+catBoxes[0].setCatState('Warm');
+catBoxes[1].setCatState('Fuzzy');
+console.log(catBoxes[0].eval('catState'));
+console.log(catBoxes[1].eval('catState'));
+console.log(catBoxes[1].getDogState());
+console.log(catBoxes[0].setCatState);
 /***************************************************** */
 function benchmark(iters, f, ...rest) {
     let benchName = `${f.name}`;
@@ -157,6 +180,8 @@ function allCopyBenchmarks() {
     benchmarkX2(1e3, fastCopy, src64, dst64);
     benchmarkX2(1e3, copyUint8);
 }
+// benchmarkX2(1e3, fastCopy, src, dst);
+// benchmarkX2(1e3, copyUint8);
 /***************************************************** */
 const nodeParseRegEx = /-/g;
 function nodeParse(uuidStr) {
@@ -316,10 +341,10 @@ function uuidBenchmarks() {
 /**
  *
  *
- * @param {*} cb
- * @param {*} startInterval
- * @param {*} factor
- * @param {*} limit
+ * @param {() => void} cb
+ * @param {number} startInterval
+ * @param {number} factor
+ * @param {number} limit
  */
 async function pinger(cb, startInterval, factor, limit) {
     let delay = startInterval;
@@ -329,6 +354,15 @@ async function pinger(cb, startInterval, factor, limit) {
         delay *= factor;
     }
 }
+/**
+ *
+ *
+ * @param {string} label
+ * @param {() => void} cb
+ * @param {number} startInterval
+ * @param {number} factor
+ * @param {number} limit
+ */
 async function timePinger(label, cb, startInterval, factor, limit) {
     console.time(label);
     await pinger(cb, startInterval, factor, limit);
@@ -340,6 +374,9 @@ function startPingers() {
     timePinger('zip', () => console.log('          zip'), 52000, 0.9, 10);
     timePinger('zoom!', () => console.log('              zoom!'), 53000, 0.9, 10);
 }
-uuidBenchmarks();
-allCopyBenchmarks();
+// uuidBenchmarks();
+// allCopyBenchmarks();
+// const repl = require('repl');
+// startPingers();
+export default module.exports = { org: src, dst, src64, dst64, makeBox, makeEs6Box };
 //# sourceMappingURL=scratchpad.js.map

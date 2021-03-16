@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node14/tsconfig.json",
   "compilerOptions": {
+    "strict": true,
     "module": "es2020",
     "sourceMap": true,
     "declaration": true,
