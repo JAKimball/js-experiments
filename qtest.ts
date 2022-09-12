@@ -1,3 +1,7 @@
-import sp from './src/scratchpad';
+import { allCopyBenchmarks } from './src/scratchpad.js'
 
-sp.makeBox();
+
+
+// sp.makeBox()
+
+allCopyBenchmarks()

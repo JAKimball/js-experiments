@@ -1,6 +1,6 @@
 // From https://rfrn.org/~shu/2013/03/20/two-reasons-functional-style-is-slow-in-spidermonkey.html
 'use strict';
-import { validate, stringify, parse } from 'uuid';
+import { parse, stringify, validate } from 'uuid';
 function benchmark2D(n, iters, f) {
     var outer = [];
     // var outer = new Int32Array(n);
@@ -91,6 +91,7 @@ function makeBox() {
     // }
     return {
         eval: _eval,
+        // getDogState,
     };
 }
 let makeEs6Box = () => {
@@ -112,20 +113,33 @@ let makeEs6Box = () => {
  * available commands.
  * Select and run the "Start on Current File" command.
  */
-let boxes = Array.from({ length: 10 }, () => makeEs6Box());
-let catBoxes = boxes.map(box => ({
-    ...box,
-    setCatState: box.eval('state => catState = state'),
-}));
-catBoxes;
-console.log(catBoxes[0].eval('catState'));
-console.log(catBoxes[1].eval('catState'));
-catBoxes[0].setCatState('Warm');
-catBoxes[1].setCatState('Fuzzy');
-console.log(catBoxes[0].eval('catState'));
-console.log(catBoxes[1].eval('catState'));
-console.log(catBoxes[1].getDogState());
-console.log(catBoxes[0].setCatState);
+let boxes = Array.from({ length: 10 }, () => {
+    let box = makeEs6Box();
+    return {
+        ...box,
+        setCatState: box.eval('state => catState = state'),
+        addCatState: box.eval('state => catState += state'),
+    };
+});
+boxes;
+console.log(boxes[0].eval('catState'));
+console.log(boxes[1].eval('catState'));
+boxes[0].setCatState('Warm');
+boxes[1].setCatState('Fuzzy');
+boxes[1].addCatState('-Wuzzy');
+boxes[2].setCatState(2);
+boxes[2].addCatState(4);
+console.log(boxes[0].eval('catState'));
+console.log(boxes[1].eval('catState'));
+console.log(boxes[2].eval('catState'));
+console.log(boxes.map(box => box.eval('catState')));
+console.log(boxes[1].getDogState());
+console.log(boxes[0].setCatState);
+let a = 1;
+let b = 2;
+console.log('a:', a, 'b:', b);
+[a, b] = [b, a];
+console.log('a:', a, 'b:', b);
 /***************************************************** */
 function benchmark(iters, f, ...rest) {
     let benchName = `${f.name}`;
@@ -169,7 +183,7 @@ function benchmarkX2(iters, f, ...rest) {
     benchmark(iters, f, ...rest);
     benchmark(iters, f, ...rest);
 }
-function allCopyBenchmarks() {
+export function allCopyBenchmarks() {
     benchmarkX2(1e3, copyUint8);
     benchmarkX2(1e3, copyWhile, src, dst);
     benchmarkX2(1e3, copyUint8);
@@ -378,5 +392,23 @@ function startPingers() {
 // allCopyBenchmarks();
 // const repl = require('repl');
 // startPingers();
-export default module.exports = { org: src, dst, src64, dst64, makeBox, makeEs6Box };
+// export default module.exports = { org: src, dst, src64, dst64, makeBox, makeEs6Box };
+// let replSvr = repl.start();
+// let context = replSvr.context;
+// context.src = src;
+// context.dst = dst;
+// context.src64 = src64;
+// context.dst64 = dst64;
+// context.loopBenchmarks = loopBenchmarks;
+// context.benchmark = benchmark;
+// context.allCopyBenchmarks = allCopyBenchmarks;
+// context.makeBox = makeBox;
+// context.makeEs6Box = makeEs6Box;
+// context.pinger = pinger;
+// context.startPingers = startPingers;
+// context.uuidBenchmarks = uuidBenchmarks;
+//   ...replSvr.context,
+//   org, dst, org64, dst64, makeBox, makeEs6Box
+// };
+console.log(process.versions);
 //# sourceMappingURL=scratchpad.js.map
