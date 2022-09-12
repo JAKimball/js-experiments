@@ -4,28 +4,23 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    
     {
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "name": "nodemon",
-      "program": "${workspaceFolder}/scratchpad.js",
+      "program": "${workspaceFolder}/build/scratchpad.js",
       "request": "launch",
       "restart": true,
       "runtimeExecutable": "nodemon",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "pwa-node"
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
     },
     {
-      "type": "pwa-node",
+      "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}/scratchpad.js"
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/build/scratchpad.js"
     }
   ]
 }

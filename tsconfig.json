@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "module": "es2020",
+    "sourceMap": true,
+    "declaration": true,
+    "types": ["jest", "node"],
+    "outDir": "./build",
+    "rootDir": "./src",
+    "moduleResolution": "node",
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "**/__tests__/*.ts"]
+}

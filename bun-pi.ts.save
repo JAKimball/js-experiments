@@ -1,0 +1,22 @@
+#!/usr/bin/env bun
+// @ts-check
+
+import { stdout, write } from "bun"
+import { calcPi2, calcPi } from './src/pi/pi'
+
+const outPipe = {
+  waiting: boolean = false
+  buffer: string = ''
+
+  CB = () => {
+    
+  write (textToOutput: string) {
+    if (waiting) {
+      buffer = buffer + textToOutput
+    } else {
+      write(stdout, textToOutput).then(CB)
+      
+  }
+}
+
+calcPi2(outPipe)
